@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+<question type="interval">
+    <name>
+      <text>m3 above D5</text>
+    </name>
+    <questiontext format="html">
+      <text/>
+    </questiontext>
+    <image/>
+    <generalfeedback>
+      <text/>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <shuffleanswers>0</shuffleanswers>
+    <direction>a</direction>
+    <quality>m</quality>
+    <size>3</size>
+    <orignoteletter>D</orignoteletter>
+    <orignoteaccidental/>
+    <orignoteregister>5</orignoteregister>
+    <clef>t</clef>
+    <answer fraction="100">
+      <text>F5</text>
+      <feedback>
+        <text/>
+      </feedback>
+    </answer>
+  </question>
+  <question type="interval">
+    <name>
+      <text>M3 below F#3</text>
+    </name>
+    <questiontext format="html">
+      <text/>
+    </questiontext>
+    <image/>
+    <generalfeedback>
+      <text/>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <shuffleanswers>0</shuffleanswers>
+    <direction>d</direction>
+    <quality>M</quality>
+    <size>3</size>
+    <orignoteletter>F</orignoteletter>
+    <orignoteaccidental>#</orignoteaccidental>
+    <orignoteregister>3</orignoteregister>
+    <clef>b</clef>
+    <answer fraction="100">
+      <text>D3</text>
+      <feedback>
+        <text/>
+      </feedback>
+    </answer>
+  </question>
+  <question type="interval">
+    <name>
+      <text>D7 above B5</text>
+    </name>
+    <questiontext format="html">
+      <text/>
+    </questiontext>
+    <image/>
+    <generalfeedback>
+      <text/>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0.1</penalty>
+    <hidden>0</hidden>
+    <shuffleanswers>0</shuffleanswers>
+    <direction>a</direction>
+    <quality>D</quality>
+    <size>7</size>
+    <orignoteletter>B</orignoteletter>
+    <orignoteaccidental/>
+    <orignoteregister>5</orignoteregister>
+    <clef>t</clef>
+    <answer fraction="100">
+      <text>Ab6</text>
+      <feedback>
+        <text/>
+      </feedback>
+    </answer>
+  </question>
+</quiz>
