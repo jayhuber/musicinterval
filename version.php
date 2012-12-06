@@ -28,9 +28,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2012101100;
+$plugin->version   = 2012120600;
 $plugin->requires  = 2012062500;
 $plugin->cron      = 0;
 $plugin->component = 'qtype_musicinterval';
 $plugin->maturity  = MATURITY_STABLE;
-$plugin->release   = '1.1 for Moodle 2.3+';
+$plugin->release   = '1.1 for Moodle 2.3+ & 2.4+';

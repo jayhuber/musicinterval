@@ -82,8 +82,6 @@ class qtype_musicinterval extends question_type {
     * 
     */
     function save_question_options($question) {
-echo "save_question_options<br />";	
-
         $this->save_question_answers($question);
 		
         if($res=parent::save_question_options($question)) {
@@ -94,8 +92,6 @@ echo "save_question_options<br />";
     }
 
     function save_question_answers($question) {
-echo "save_question_answers<br />";	
-
 		global $DB;
         $result = new stdClass;
         $context = $question->context;
