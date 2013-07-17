@@ -1,4 +1,4 @@
-Readme file for the MUSICAL SCALE question type
+Readme file for the MUSICAL INTERVAL question type
 ===============================================
 
 A plugin for the learning management system moodle to provide population of a
