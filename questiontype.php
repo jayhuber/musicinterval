@@ -15,35 +15,50 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Question type class for the Music Interval question type.
- *
- * @package     qtype
- * @subpackage  musicinterval
- * @copyright   &copy; 2009 Eric Brisson for Moodle 1.x and Flash Component
- * @author      ebrisson at winona.edu
- * @copyright   &copy; 2013 Jay Huber for Moodle 2.x
- * @author      jhuber at colum.edu
- * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
-*/
-
+ * @package    qtype
+ * @subpackage musicinterval
+ * @copyright  2013 Jay Huber (jhuber@colum.edu)
+ * @copyright  2009 Eric Bisson (ebrisson@winona.edu)
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/question/type/musicinterval/question.php');
 
 /**
- * The calculated question type.
+ * The musicinterval question type.
  *
- * @copyright  1999 onwards Martin Dougiamas {@link http://moodle.com}
+ * @copyright  2013 Jay Huber (jhuber@colum.edu)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+ 
 class qtype_musicinterval extends question_type {
 	
-    /**
-    * Overriden function. See comments from base class.
-    */
     function name() {
         return 'musicinterval';    
+    }
+
+    function extra_question_fields() {
+        return array('question_musicinterval',
+        'direction',        
+        'quality',        
+        'size',          
+        'orignoteletter',  
+        'orignoteaccidental',      
+        'orignoteregister' ,
+        'clef'    
+        );
+    }
+
+    public function move_files($questionid, $oldcontextid, $newcontextid) {
+        parent::move_files($questionid, $oldcontextid, $newcontextid);
+        $this->move_files_in_hints($questionid, $oldcontextid, $newcontextid);
+    }
+
+    protected function delete_files($questionid, $contextid) {
+        parent::delete_files($questionid, $contextid);
+        $this->delete_files_in_hints($questionid, $contextid);
     }
 
 	protected function initialise_question_instance(question_definition $question, $questiondata) {
@@ -56,31 +71,18 @@ class qtype_musicinterval extends question_type {
 			break;
 		}
 		$this->initialise_question_answers($question, $questiondata, false);
-	}	
-	
-    /// QUESTION OPTIONS /////////////////
-	
-    /**
-    * Overriden function. See comments from base class.
-    */
-    function extra_question_fields() {
-        return array('question_musicinterval',
-        'direction',        
-        'quality',        
-        'size',          
-        'orignoteletter',  
-        'orignoteaccidental',      
-        'orignoteregister' ,
-        'clef'    
-        );
+	}
+
+    public function get_random_guess_score($questiondata) {
+        // TODO.
+        return 0;
+    }
+
+    public function get_possible_responses($questiondata) {
+        // TODO.
+        return array();
     }
 	
-    /**
-    * Overriden function. See comments from base class.
-    * 
-    * This implementation saves question answers before calling the parent function.
-    * 
-    */
     function save_question_options($question) {
         $this->save_question_answers($question);
 		
@@ -166,177 +168,6 @@ class qtype_musicinterval extends question_type {
 		
         // Finally we are all done so return the result!
         return true;
-    }
-	
-
-
-
-	
-	
-    /// QUESTION VALIDATION /////////////////
-	
-    /**
-    * Overriden function. See comments from base class.
-    */
-    function check_response(&$question, &$state){
-echo "check_response<br />";	
-        foreach($question->options->answers as $aid => $answer) {
-            if ($this->test_response($question, $state, $answer)) {
-                return $aid;
-            }
-        }
-        return false;
-    }
-	
-	
-    /// PRINTING /////////////////
-	
-    /**
-    * Overriden function. See comments from base class.
-    */
-    function print_question_formulation_and_controls(&$question, &$state, $cmoptions, $options) {
-echo "print_question_formulation_and_controls<br />";		
-        global $CFG;
-		
-        $readonly = empty($options->readonly) ? '' : 'readonly="readonly"';
-        $formatoptions = new stdClass;
-        $formatoptions->noclean = true;
-        $formatoptions->para = false;
-        $nameprefix = $question->name_prefix;
-		
-        /// Print question text and media
-		
-        $questiontext = format_text($question->questiontext,
-        $question->questiontextformat,
-        $formatoptions, $cmoptions->course);
-        $image = get_question_image($question);
-		
-        /// Print input controls
-		
-        if (isset($state->responses['']) && $state->responses[''] != '') {
-            $value = ' value="'.s($state->responses[''], true).'" ';
-            } else {
-            $value = ' value="" ';
-        }
-        $inputname = ' name="'.$nameprefix.'" ';
-		
-        $feedback = '';
-        $class = '';
-        $feedbackimg = '';
-		
-        if ($options->feedback) {
-            $class = question_get_feedback_class(0);
-            $feedbackimg = question_get_feedback_image(0);
-            foreach($question->options->answers as $answer) {
-				
-                if ($this->test_response($question, $state, $answer)) {
-                    // Answer was correct or partially correct.
-                    $class = question_get_feedback_class($answer->fraction);
-                    $feedbackimg = question_get_feedback_image($answer->fraction);
-                    if ($answer->feedback) {
-                        $feedback = format_text($answer->feedback, true, $formatoptions, $cmoptions->course);
-                    }
-                    break;
-                }
-            }
-        }
-		
-        include("$CFG->dirroot/question/type/musicinterval/display.html");
-    }
-	
-    /**
-    * Overriden function. See comments from base class.
-    * 
-    * This implementation prints the correct answer.
-    */
-    function print_question_grading_details(&$question, &$state, $cmoptions, $options) {
-echo "print_question_grading_details<br />";
-        /* The default implementation prints the number of marks if no attempt
-        has been made. Otherwise it displays the grade obtained out of the
-        maximum grade available and a warning if a penalty was applied for the
-        attempt and displays the overall grade obtained counting all previous
-        responses (and penalties) */
-        global $QTYPES ;
-        // MDL-7496 show correct answer after "Incorrect"
-        $correctanswer = '';
-        if ($correctanswers =  $QTYPES[$question->qtype]->get_correct_responses($question, $state)) {
-            if ($options->readonly && $options->correct_responses) {
-                $delimiter = '';
-                if ($correctanswers) {
-                    foreach ($correctanswers as $ca) {
-                        $correctanswer .= $delimiter.$ca;
-                        $delimiter = ', ';
-                    }
-                }
-            }
-        }
-		
-        if (QUESTION_EVENTDUPLICATE == $state->event) {
-            echo ' ';
-            print_string('duplicateresponse', 'quiz');
-        }
-        if (!empty($question->maxgrade) && $options->scores) {
-            if (question_state_is_graded($state->last_graded)) {
-                // Display the grading details from the last graded state    
-                $grade = new stdClass;
-                $grade->cur = round($state->last_graded->grade, $cmoptions->decimalpoints);
-                $grade->max = $question->maxgrade;
-                $grade->raw = round($state->last_graded->raw_grade, $cmoptions->decimalpoints);
-				
-                // let student know wether the answer was correct
-                echo '<div class="correctness ';
-                if ($state->last_graded->raw_grade >= $question->maxgrade/1.01) { // We divide by 1.01 so that rounding errors dont matter.
-                echo ' correct">';
-                print_string('correct', 'quiz');
-			} else if ($state->last_graded->raw_grade > 0) {
-                echo ' partiallycorrect">';
-                print_string('partiallycorrect', 'quiz');
-                // MDL-7496
-                if ($correctanswer) {    
-                    echo ('<div class="correctness">');
-                    print_string('correctansweris', 'quiz', s($correctanswer, true));
-                    echo ('</div>');
-                }
-                } else {
-                    echo ' incorrect">';
-                    // MDL-7496
-                    print_string('incorrect', 'quiz');
-                    if ($correctanswer) {
-                        echo ('<div class="correctness">');
-                        print_string('correctansweris', 'quiz', s($correctanswer, true));
-                        echo ('</div>');
-                    }
-                }
-                echo '</div>';
-				
-                echo '<div class="gradingdetails">';
-                // print grade for this submission
-                print_string('gradingdetails', 'quiz', $grade);
-                if ($cmoptions->penaltyscheme) {
-                    // print details of grade adjustment due to penalties
-                    if ($state->last_graded->raw_grade > $state->last_graded->grade){
-                        echo ' ';
-                        print_string('gradingdetailsadjustment', 'quiz', $grade);
-                    }
-                    // print info about new penalty
-                    // penalty is relevant only if the answer is not correct and further attempts are possible
-                    if (($state->last_graded->raw_grade < $question->maxgrade) and (QUESTION_EVENTCLOSEANDGRADE != $state->event)) {
-                        if ('' !== $state->last_graded->penalty && ((float)$state->last_graded->penalty) > 0.0) {
-                            // A penalty was applied so display it
-                            echo ' ';
-                            print_string('gradingdetailspenalty', 'quiz', $state->last_graded->penalty);
-                            } else {
-                            /* No penalty was applied even though the answer was
-                            not correct (eg. a syntax error) so tell the student
-                            that they were not penalised for the attempt */
-                            echo ' ';
-                            print_string('gradingdetailszeropenalty', 'quiz');
-                        }
-                    }
-                }
-                echo '</div>';
-            }    
-        }
     }
 	
 }

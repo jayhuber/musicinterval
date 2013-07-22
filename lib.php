@@ -15,21 +15,27 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Server question type files.
- *
- * @package     qtype
- * @subpackage  musicinterval
- * @copyright   &copy; 2009 Eric Brisson for Moodle 1.x and Flash Component
- * @author      ebrisson at winona.edu
- * @copyright   &copy; 2013 Jay Huber for Moodle 2.x
- * @author      jhuber at colum.edu
- * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
-*/
+ * @package    qtype
+ * @subpackage musicinterval
+ * @copyright  2013 Jay Huber (jhuber@colum.edu)
+ * @copyright  2009 Eric Bisson (ebrisson@winona.edu)
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Checks file access for essay questions.
+ * Checks file access for musicinterval questions.
+ * @package  qtype_musicinterval
+ * @category files
+ * @param stdClass $course course object
+ * @param stdClass $cm course module object
+ * @param stdClass $context context object
+ * @param string $filearea file area
+ * @param array $args extra arguments
+ * @param bool $forcedownload whether or not force download
+ * @param array $options additional options affecting the file serving
+ * @return bool
  */
 function qtype_musicinterval_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options=array()) {
     global $CFG;

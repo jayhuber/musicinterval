@@ -15,20 +15,21 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Music Interval question definition class.
- *
- * @package     qtype
- * @subpackage  musicinterval
- * @copyright   &copy; 2009 Eric Brisson for Moodle 1.x and Flash Component
- * @author      ebrisson at winona.edu
- * @copyright   &copy; 2013 Jay Huber for Moodle 2.x
- * @author      jhuber at colum.edu
- * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
-*/
-
+ * @package    qtype
+ * @subpackage musicinterval
+ * @copyright  2013 Jay Huber (jhuber@colum.edu)
+ * @copyright  2009 Eric Bisson (ebrisson@winona.edu)
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Represents a musicinterval question.
+ *
+ * @copyright  2013 Jay Huber (jhuber@colum.edu)
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
 class qtype_musicinterval_question extends question_graded_automatically {
 	public $answers;
@@ -67,13 +68,36 @@ class qtype_musicinterval_question extends question_graded_automatically {
     }
 
     public function grade_response(array $response) {
-        if ($this->rightanswer == $response['answer']) {
-            $fraction = 1;
-        } else {
-            $fraction = 0;
+        $answer = $response['answer'];
+        if (substr($answer, -1, 1) == ',') {
+          $answer = substr($answer, 0, -1);
         }
+        
+        $fraction = 0;
+        foreach ($this->answers as $a) {
+            if ($a->answer == $answer) {
+                $fraction = 1;
+            }
+        }
+        
         return array($fraction, question_state::graded_state_for_fraction($fraction));
     }
 
+    public function check_file_access($qa, $options, $component, $filearea,
+            $args, $forcedownload) {
+        // TODO.
+        if ($component == 'question' && $filearea == 'hint') {
+            return $this->check_hint_file_access($qa, $options, $args);
+
+        } else {
+            return parent::check_file_access($qa, $options, $component, $filearea,
+                    $args, $forcedownload);
+        }
+    }
+
+    public function compute_final_grade($responses, $totaltries) {
+        // TODO.
+        return 0;
+    }
 
 }

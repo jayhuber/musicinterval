@@ -15,56 +15,25 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Defines the editing form for the music interval question type.
- *
- * @package     qtype
- * @subpackage  musicinterval
- * @copyright   &copy; 2009 Eric Brisson for Moodle 1.x and Flash Component
- * @author      ebrisson at winona.edu
- * @copyright   &copy; 2013 Jay Huber for Moodle 2.x
- * @author      jhuber at colum.edu
- * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
-*/
+ * @package    qtype
+ * @subpackage musicinterval
+ * @copyright  2013 Jay Huber (jhuber@colum.edu)
+ * @copyright  2009 Eric Bisson (ebrisson@winona.edu)
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot . '/question/type/edit_question_form.php');
-
 /**
- * Select from drop down list question editing form definition.
- *
- * @copyright  2011 The Open University
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
+* musicinterval question editing form definition.
+*
+* @copyright  2013 Jay Huber (jhuber@colum.edu)
+* @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+*/
+
 class qtype_musicinterval_edit_form extends question_edit_form {
-    const MAX_GROUPS = 8;
 
-    /** @var array of HTML tags allowed in choices / drag boxes. */
-    protected $allowedhtmltags = array(
-        'sub',
-        'sup',
-        'b',
-        'i',
-        'em',
-        'strong'
-    );
-
-    /** @var string regex to match HTML open tags. */
-    private $htmltstarttagsandattributes = '/<\s*\w.*?>/';
-
-    /** @var string regex to match HTML close tags or br. */
-    private $htmltclosetags = '~<\s*/\s*\w\s*.*?>|<\s*br\s*>~';
-
-    /** @var string regex to select text like [[cat]] (including the square brackets). */
-    private $squarebracketsregex = '/\[\[[^]]*?\]\]/';
-
-    /**
-     * definition_inner adds all specific fields to the form.
-     * @param object $mform (the form being built).
-     */
     protected function definition_inner($mform) {
-        global $CFG;
-
         $mform->addElement('select', 'direction', get_string('direction','qtype_musicinterval'),
             array( "a"  => get_string('dirasc', 'qtype_musicinterval'),
             "d"  => get_string('dirdesc', 'qtype_musicinterval')

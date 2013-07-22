@@ -56,6 +56,11 @@ Report all bugs on https://github.com/jayhuber/musicinterval/issues
 
 Changelog
 ---------
+v2013072000 - release v1.4 Stable
+- Fixed Backup/Restore capability 
+- Aligned code to more closely match 2.x template and removed much unused code
+- Cleaned up copyright tags
+
 v2013071700 - release v1.3 Stable
 - Updated this readme file
 - Removed import/export overrides which should fix the issue of importing/exporting data
